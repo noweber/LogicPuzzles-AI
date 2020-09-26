@@ -9,24 +9,42 @@ BKnave = Symbol("B is a Knave")
 CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
 
+puzzle_definition = And(
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(BKnight, Not(BKnave)),
+    Biconditional(CKnight, Not(CKnave)),
+)
+
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
-    # TODO
+    puzzle_definition,
+
+    # A says "I am both a knight and a knave."
+    Biconditional(AKnight, And(AKnight, AKnave))
 )
 
 # Puzzle 1
 # A says "We are both knaves."
 # B says nothing.
 knowledge1 = And(
-    # TODO
+    puzzle_definition,
+
+    # A says "We are both knaves."
+    Biconditional(AKnight, And(AKnave, BKnave))
 )
 
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    puzzle_definition,
+
+    # A says "We are the same kind."
+    Biconditional(AKnight, Or(And(AKnight, BKnight), And(AKnave, BKnave))),
+
+    # B says "We are of different kinds."
+    Biconditional(BKnight, Or(And(AKnight, BKnave), And(AKnave, BKnight)))
 )
 
 # Puzzle 3
@@ -35,7 +53,19 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    puzzle_definition,
+
+    # A says either "I am a knight." or "I am a knave.", but you don't know which.
+    Implication(AKnight, Or(AKnight, AKnave)),
+
+    # B says "A said 'I am a knave'."
+    Biconditional(BKnight, Implication(AKnight, BKnave)),
+
+    # B says "C is a knave."
+    Biconditional(BKnight, CKnave),
+
+    # C says "A is a knight."
+    Biconditional(CKnight, AKnight)
 )
 
 
