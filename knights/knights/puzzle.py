@@ -56,10 +56,8 @@ knowledge3 = And(
     puzzle_definition,
 
     # A says either "I am a knight." or "I am a knave.", but you don't know which.
-    Biconditional(AKnight, Or(AKnight, AKnave)),
-
     # B says "A said 'I am a knave'."
-    Biconditional(BKnight, AKnave),
+    Biconditional(BKnight, And(AKnight, AKnave)),
 
     # B says "C is a knave."
     Biconditional(BKnight, CKnave),
